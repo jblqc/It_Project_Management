@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Recipe Detail - {{recipe.title}}{% endblock %}
+
+{% block content %} 
+
+
+
+
+
+    <div class="container">
+      
+        <div class="recipe-info mt-4 p-1 row">
+         
+            <div class="recipe-img col-md-6">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.image_alt }}" class="recipe-pic rounded">
+                
+            </div>
+            
+            <div class="recipe-detail  col-md-6">
+              
+                    <h1 class="text-center">{{ recipe.title }}</h1>
+                    <p class="text-center">Posted by {{recipe.user}} on {{recipe.posted_date}}  </p>
+                      <div class="card  " style="background-color:#ffedbd;">
+                        <div class="card-body">
+                          <p class="card-text ">
+                            
+                            <p class="p-3 text-center"><i class="bi bi-stopwatch-fill"></i><strong>Preparation Time: </strong> Hours:{{ recipe.preptime_hours }} Minutes: {{ recipe.preptime_minutes }}</p>
+                            <p class="p-3 text-center"><i class="bi bi-egg-fried"></i><strong>Servings: </strong> {{ recipe.servings }}</p>
+                            <p class="p-3 text-center"><i class="bi bi-hourglass-split"></i><strong>Cook Time: </strong> Hours: {{ recipe.cooktime_hours }} Minutes:  {{ recipe.cooktime_minutes }} </p>
+                            <p class="p-3 text-center"><i class="bi bi-piggy-bank-fill"></i><strong>Estimated Cost: </strong> {{ recipe.price }}</p>
+            
+                          </p>                      
+                      </div>         
+                    </div>
+            
+                    <hr>
+                    <p>{{recipe.description}}</p>
+                    <p class="p-3"><strong>Calories: </strong> {{ recipe.calories }}</p>
+                    <p class="p-3"><strong>Cuisine: </strong> {{ recipe.cuisine_types|title }}</p>
+                    <p class="p-3"><strong>Recipe Difficulty: </strong> {{ recipe.recipe_difficulty|title }}</p>
+                    <p  class="p-3"><strong>Rating:</strong> {{ recipe.rating|default:"No rating yet" }} stars</p>
+                    
+                    <hr>
+                   
+                {% if request.user == recipe.user %} 
+                <div class="text-center">
+                    <a href="{% url 'edit_recipe' recipe.id %}" class="btn btn-primary w-25">Edit</a>
+                    <a href="{% url 'delete_recipe' recipe.id %}" class="btn btn-primary w-25">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        
+
+        <div class="container">
+          
+        <div class="recipe-container row mt-4 ">
+            <div class="col ingredients card border-dark mb-3" >
+                <div class="card-header">Ingredients</div>
+                <div class="card-body text-dark">
+                  <p class="card-text">{{ recipe.ingredients|safe }}</p>
+                </div>
+              </div>
+
+              <div class="col instructions card border-dark mb-3" >
+                <div class="card-header">Instructions</div>
+                <div class="card-body text-dark">
+                  <p class="card-text">{{ recipe.instructions|safe }}</p>
+                </div>
+              </div>
+
+          </div>
+
+            <h2 class="text-center">Rate this recipe<br><span id="boot-icon" class="bi bi-star-fill" style="font-size: 18px; color: rgb(255, 210, 48);">&nbsp&nbsp&nbsp<span id="boot-icon" class="bi bi-star-fill" style="font-size: 18px; color: rgb(255, 210, 48);">&nbsp&nbsp&nbsp<span id="boot-icon" class="bi bi-star-fill" style="font-size: 18px; color: rgb(255, 210, 48);"></span>&nbsp&nbsp&nbsp<span id="boot-icon" class="bi bi-star-fill" style="font-size: 18px; color: rgb(255, 210, 48);"></span>&nbsp&nbsp&nbsp<span id="boot-icon" class="bi bi-star-fill" style="font-size: 18px; color: rgb(255, 210, 48);">&nbsp&nbsp&nbsp</span></span>
+            </span></h2>
+    
+        <div class="text-center">
+                <form method="post" action="{% url 'rate_recipe' recipe.id %}" >
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Rate</button>                
+                </form>
+    
+                {% if request.user == recipe.user %} 
+                <div class="alert alert-warning mt-2 mb-2" role="alert">
+                {% if rating %}
+                <p>You rated this recipe <strong>{{ rating }}</strong> stars!</p>
+                {% endif %}
+                {% endif %}
+    
+        </div>
+         
+    </div>
+        </div>
+    </div>
+
+  
+{% endblock %}
+

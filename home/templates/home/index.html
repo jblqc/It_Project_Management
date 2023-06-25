@@ -1,1 +1,288 @@
-{% extends 'base.html' %}
+
+
+
+
+{% load static %}
+
+
+
+
+
+{% block content %} 
+
+
+
+<link href="https://fonts.googleapis.com/css?family=Ultra|Alfa+Slab+One|Merriweather:400,400i|Source+Serif+Pro:400,700" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static '/css/base.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.8.1/tachyons.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static '/css/nav.css' %}">
+
+<header>
+
+ 
+  {% with request.resolver_match.url_name as url_name %}
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+        <!-- Logo -->
+          <a class="navbar-brand" href="#"><img src="{% static 'images/logo.png' %}" alt="Recipe Sharing" class="logo"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- Navigation items -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2">
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+            
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'recipes' %}active{% endif %}" href="{% url 'recipes' %}">Recipes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'add_recipe' %}active{% endif %}" href="{% url 'add_recipe' %}">New</a>
+              </li>
+              {% if request.user.is_authenticated %}
+              
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'profile' %}active{% endif %}" href="{% url 'profile' request.user.id %}">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'accounts_logout' %}active{% endif %}" href="/accounts/logout/">Logout</a>
+              </li>
+             
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'accounts_signup' %}active{% endif %}" href="/accounts/signup/">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'accounts_login' %}active{% endif %}" href="/accounts/login/">Login</a>
+              </li>
+              {% endif %}
+            </ul>
+            <!-- Form for search bar -->
+            <form class="d-flex" role="search" method="GET" action="{%url 'recipes' %}">
+                <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                <button type="button" class="btn btn-outline-dark " type="submit" data-mdb-ripple-color="#000000">Search</button>
+              </form>
+          </div>
+        </div>
+      </nav>
+  {% endwith %}
+</header>
+
+
+{% load static %}
+<div class="container">
+  <div class="grid tc">
+    <div class="folio bb">
+      <p class="b f6 sans-serif pb2 tl">The cooking show</p>
+    </div>
+    <div class="page-title tc">
+      <h1 class="alfa title-headline tracked-tight">Good Food</h1>
+      <h2 class="merriweather tracked-tight title-deck">Welcome to Good Food, the ultimate destination for foodies!</h2>
+      <p class="ttu f7 b tracked lh-title">Cook up something delicious with Good Food</p>
+    </div>
+    <div class="section-1 tc bt"><div>
+      <h1 class="alfa tracked-tight stat b">Savor the flavor</h1>
+      <h2 class="section-1-deck merriweather lh-title measure-narrow center">Good Food is more than just a recipe website; it's a community of food lovers. We bring you the best recipes from around the world.</h2></div>
+    </div>
+    <div class="hero-image bt bb">
+      <img src="https://preview.ibb.co/j1LFDa/Screen_Shot_2017_09_04_at_2_22_12_PM.png">
+    </div>
+    <div class="section-2 relative">
+      <div class="section-2-label absolute w-100">
+        <p class="ttu tracked f7 b bg-white dib ph2">Recipe Application</p>
+      </div>
+      <h2 class="alfa tracked-tight section-2-headline">A feast for the senses</h2>
+      <p class="merriweather section-2-subhead i">Foods around the world</p>
+      <div class="section-2-subsection-1 br">
+        <img src="https://image.ibb.co/mjNHRv/Screen_Shot_2017_09_04_at_3_07_20_PM.png" style="width: 110px;">
+        <h3 class="stat b">1</h3>
+        <p class="ttu b tracked f7 pb2">A feast for the senses</p>
+        <p class="pb3">Are you tired of cooking the same old meals every day? Do you want to explore new cuisines and flavors from around the world? Look no further, because Recipe Haven has got you covered!</p>
+        <h3 class="stat b">5</h3>
+        <p class="ttu b tracked f7 pb2">Cook Now!</p>
+        <p></p>
+      </div>
+      <div class="section-2-subsection-2">
+        <h3 class="stat b">2</h3>
+        <p class="ttu b tracked f7 pb2">Savor the flavor, every time with Good Food</p>
+        <p class="pb3">Good Food is your one-stop destination for mouth-watering recipes that are easy to make and taste amazing. From appetizers to desserts, we've got you covered.</p>
+        <img src="https://image.ibb.co/e3hsRv/Screen_Shot_2017_09_04_at_3_32_43_PM.png" style="width: 110px">
+        <h3 class="stat b">6</h3>
+        <p class="ttu b tracked f7 pb2"></p>
+        <p class="pb3">Our website allows you to add, edit, delete, and view recipes from different countries and cuisines with just a few clicks. With an account, you can easily save your favorite recipes, create shopping lists, and even share your own recipes with our community of passionate cooks.</p>
+      </div>
+    </div>
+    <div class="section-3 relative">
+      <div class="section-3-label absolute w-100">
+        <p class="ttu tracked f7 b bg-white dib ph2">October 24th</p>
+      </div>
+      <h2 class="alfa tracked-tight section-3-headline">Food Day</h2>
+      <div class="section-3-subhead">
+        <img src="https://img.freepik.com/premium-vector/bottle-wine-drawing_117521-52.jpg?w=740" style="width:100%;">
+      </div>
+      <div class="section-3-subsection-1 br">
+        <h3 class="stat b">3</h3>
+        <p class="ttu b tracked f7 pb2">FOOD DAY</p>
+        <p class="pb3"> It is a day to raise awareness about the importance of eating nutritious food and advocating for food policies that support a healthy and just food system.</p>
+      </div>
+      <div class="section-3-subsection-2">
+        <h3 class="stat b">7</h3>
+        <p class="ttu b tracked f7 pb2">CRUD</p>
+        <p class="pb3">Users can easily add, delete, and store their favorite recipes on the website.
+
+        </p>
+      </div>
+    </div>
+    <div class="section-4 relative">
+      <div class="section-4-label absolute w-100">
+        <p class="ttu tracked f7 b bg-white dib ph2">Personalization</p>
+      </div>
+      <h2 class="alfa tracked-tight section-4-headline">Users can create their own profile and view their saved recipes.</h2>
+      <p class="merriweather section-2-subhead i"> Delicous Recipes</p>
+      <div class="section-4-subsection-1 br">
+        <h3 class="stat b"></h3>
+        <p class="ttu b tracked f7 pb2">Loved by many</p>
+        <p class="pb3">No more flipping through endless cookbooks or scrolling through Pinterest looking for the perfect recipe.
+         </p>
+      </div>
+      <div class="section-4-subsection-2">
+        <h3 class="stat b">4</h3>
+        <p class="ttu b tracked f7 pb2">Culinary Delights</p>
+        <p class="pb3">So why wait? Sign up now and unlock a world of culinary delights at your fingertips!
+</p>
+      </div>
+      <div class="section-4-subsection-3 pa3">
+        <p class="s4-ss3-s1 ttu s4-box b tracked lh-title">Variety</p>
+        <p class="s4-ss3-s2 s4-box i merriweather lh-title pv2 measure center">With a diverse range of recipes from around the world, users can explore and experiment with new flavors and ingredients.</p>
+        <div class="sans-serif s4-box s4-ss3-s3 lh-title">
+          <p class="b">Inspiration</p>
+          <p class="">Good Food offers a source of inspiration for home cooks, with tips, tricks, and ideas for creating delicious and healthy meals.</p>
+        </div>
+        <div class="sans-serif s4-box s4-ss3-s4 lh-title">
+          <p class="b">From kitchen to community</p>
+          <p class="pb3">Satisfy your cravings with Good Food!</p>
+          <p class="b">Discover and share good food</p>
+          <p class="">Good food is the foundation of genuine happiness</p>
+        </div>
+        <div class="sans-serif s4-box s4-ss3-s5 lh-title">
+          <p class="b">Essence of Cooking</p>
+          <p class="">"Cooking is like love, it should be entered into with abandon or not at all." - Harriet Van Horne</p>
+        </div>
+        <p class="sans-serif s4-box s4-ss3-s6 lh-title pv2 b">"Cooking is about passion, so it may look slightly temperamental in a way that it's too assertive to the naked eye." - Gordon Ramsay</p>
+      </div>
+    </div>
+    <div class="section-5 relative">
+      <div class="section-5-label absolute w-100">
+        <p class="ttu tracked f7 b bg-white dib ph2">DELICIOUS</p>
+      </div>
+      <br>
+      <h2 class="alfa tracked-tight section-5-headline">FOOD</h2>
+      <div class="measure-narrow center section-5-subsection-1">
+        <h3 class="stat b">511</h3>
+        <p class="ttu b tracked f7 pb2">The language of Love</p>
+        <p class="pb3 measure center">Cooking is like a language. You have to learn the basics and then you can improvise.</p>
+      </div>
+      <div class=" center section-5-subsection-2">
+        <img src="https://image.ibb.co/c0owKF/Screen_Shot_2017_09_04_at_4_29_50_PM.png" style="height: 150px;">
+        <h3 class="stat b">CITE</h3>
+        <p class="ttu b tracked f7 pb2">Thomas Keller</p>
+        <p class="pb3 measure-narrow center">A recipe has no soul, you as the cook must bring soul to the recip</p>
+      </div>
+      <div class="center section-5-subsection-3">
+        <img src="https://thumbs.dreamstime.com/b/still-life-decanter-vegetables-27714460.jpg" style="height: 150px;">
+        <h3 class="stat b">IT32S2</h3>
+        <p class="ttu b tracked f7 pb2">Good Food</p>
+        <p class="pb3 measure-narrow center">Cooking is not just about the ingredients, but the love and passion that goes into each dish</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container flex-column pt-3 " style="margin-top: 25%;">
+  <hr>
+    <section class="text-center">
+        <h1 class="main-title mx-auto">Welcome to Good Food, the ultimate destination for foodies!</h1>
+        <p class="pt-4">
+            Are you tired of cooking the same old meals every day? Do you want to explore new cuisines and flavors
+            from around the world? Look no further,
+            because Recipe Haven has got you covered!
+            <br>
+            Our website allows you to add, edit, delete, and view recipes from different countries and cuisines with just
+            a few clicks. With an account, you can easily save your favorite recipes, create shopping lists, and even share
+
+
+            your own recipes with our community of passionate cooks.
+            <br>
+            No more flipping through endless cookbooks or scrolling through Pinterest looking for the perfect recipe.
+            Recipe Haven has everything you need to spice up your meals and impress your friends and family.
+        
+            So why wait? Sign up now and unlock a world of culinary delights at your fingertips!
+        </p>
+    </section>
+    <section>
+        <div class="recipe-cont">
+            {% for recipe in recipes %} 
+                <a href="{% url 'recipe_detail' recipe.id %}" class="img-container">
+                    <img src="{{recipe.image.url}}" alt="{{recipe.image_alt}}" style="width: 100%">
+                    <div class="centered"><h2>{{recipe.title}}</h2></div>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+
+<div class="d-flex flex-row-reverse bd-highlight">
+    <div class="p-2 mt-4 bd-highlight "> 
+        <a href="#" class="back-to-top"><img src="{% static 'images/backtotop.png' %}" alt="Recipe Sharing" style="width: 80px;"></a>
+    </div>
+</div>
+
+   <!-- Script -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+   <script>
+   $(document).ready(function(){
+    
+       //Check to see if the window is top if not then display button
+       $(window).scroll(function(){
+           // Show button after 100px
+           var showAfter = 100;
+           if ($(this).scrollTop() > showAfter ) { 
+               $('.back-to-top').fadeIn();
+           } else { 
+               $('.back-to-top').fadeOut();
+           }
+       });
+    
+       //Click event to scroll to top
+       $('.back-to-top').click(function(){
+           $('html, body').animate({scrollTop : 0},800);
+           return false;
+       });
+    
+   });
+   </script>
+<footer>
+
+  <a href="" style="margin-left: 40%" target="_blank" rel="noopener" arial-label="Linked - Opens in a new tab">
+      <img src ="{% static '/icons/icons8-linkedin.svg' %}" alt="LinkedIn Icon" class="social-icon">
+  </a>
+
+  <a href=""  target="_blank" rel="noopener" arial-label="Instagram - Opens in a new tab">
+      <img src ="{% static '/icons/icons8-instagram.svg' %}" alt="Instagram Icon" class="social-icon">
+  </a>
+
+  <a href=""  target="_blank" rel="noopener" arial-label="Twitter - Opens in a new tab">
+      <img src ="{% static '/icons/icons8-twitter.svg' %}" alt="Twitter Icon" class="social-icon">
+  </a>
+
+  <a href="" target="_blank" rel="noopener" arial-label="Youtube - Opens in a new tab">
+      <img src ="{% static '/icons/icons8-youtube.svg' %}" alt="Youtube Icon" class="social-icon">
+  </a>
+</footer>
+
+{% endblock %}

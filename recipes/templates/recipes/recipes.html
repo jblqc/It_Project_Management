@@ -1,0 +1,63 @@
+
+{% extends "base.html" %} 
+{% load static %}
+
+
+{% block title %}Recipes{% endblock %}
+
+{% block content %} 
+
+<h1 class="text-center p-2 d-block">
+    Latest Recipes
+</h1>
+
+
+<div class="container d-flex flex-row flex-wrap justify-content-center">
+    {% for recipe in recipes %} 
+    <a href="{% url 'recipe_detail' recipe.id %}" class="recipes" aria-label="Click to view {{recipe.title}}">
+        <div class="card m-3" style="width: 18rem;">
+            <img src="{{recipe.image.url}}" class="card-img-top" alt="{{recipe.image_alt}}">
+            <div class="card-body">
+              <h2 class="card-title">{{recipe.title}}</h2>
+              <p class="card-text">{{recipe.description|truncatechars:100}}</p>
+            </div>
+        </div>
+    </a>
+    
+    {% endfor %}
+    
+</div>
+
+    <!--Back to Top-->
+<div class="d-flex flex-row-reverse bd-highlight">
+    <div class="p-2 mt-4 bd-highlight "> 
+        <a href="#" class="back-to-top"><img src="{% static 'images/backtotop.png' %}" alt="Recipe Sharing" style="width: 50px;"></a>
+    </div>
+</div>
+
+   <!-- Script -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+   <script>
+   $(document).ready(function(){
+    
+       //Check to see if the window is top if not then display button
+       $(window).scroll(function(){
+           // Show button after 100px
+           var showAfter = 100;
+           if ($(this).scrollTop() > showAfter ) { 
+               $('.back-to-top').fadeIn();
+           } else { 
+               $('.back-to-top').fadeOut();
+           }
+       });
+    
+       //Click event to scroll to top
+       $('.back-to-top').click(function(){
+           $('html, body').animate({scrollTop : 0},800);
+           return false;
+       });
+    
+   });
+   </script>
+   </body>
+{% endblock %}
