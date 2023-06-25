@@ -73,7 +73,7 @@
 
     //SERVINGSCOUNT--------------------------------------------------------------------------
 
-    var servingData = JSON.parse(('{{ serving_data|safe }}'));
+    var servingData = JSON.parse('{{ serving_data|safe }}');
     console.log('servingData:', servingData);
 
     var recipeNames = [];
@@ -124,8 +124,8 @@
     });
 
     // Create a polar area chart for recipe difficulty
-    var ctx = document.getElementById('difficulty-chart').getContext('2d');
-    new Chart(ctx, {
+    var ctx2 = document.getElementById('difficulty-chart').getContext('2d');
+    new Chart(ctx2, {
         type: 'polarArea',
         data: {
             labels: difficulties,
@@ -246,64 +246,64 @@ var chart = new Chart(ctx, {
 //total_prep--------------------------
 // Recipe Preptime
 var recipePreptime = JSON.parse('{{ recipe_preptime|safe }}');
-    console.log('recipePreptime:', recipePreptime);
+console.log('recipePreptime:', recipePreptime);
 
-    var recipeNames = [];
-    var totalPreptimes = [];
+var recipeNamesPrep = [];
+var totalPreptimes = [];
 
-    // Extract recipe names and total preptime from JSON data
-    recipePreptime.forEach(function(item) {
-      recipeNames.push(item.title);
-      totalPreptimes.push(item.total_preptime);
-    });
+// Extract recipe names and total preptime from JSON data
+recipePreptime.forEach(function(item) {
+  recipeNamesPrep.push(item.title); // Use recipeNamesPrep instead of recipeNames
+  totalPreptimes.push(item.total_preptime);
+});
 
-    // Find the recipe with the highest total preptime
-    var maxPreptime = Math.max(...totalPreptimes);
-    var maxPreptimeIndex = totalPreptimes.indexOf(maxPreptime);
+// Find the recipe with the highest total preptime
+var maxPreptime = Math.max(...totalPreptimes);
+var maxPreptimeIndex = totalPreptimes.indexOf(maxPreptime);
 
-    // Create an array of bar colors with the highest preptime bar in red
-    var barColors = totalPreptimes.map(function(preptime, index) {
-      if (index === maxPreptimeIndex) {
-        return 'rgba(255, 0, 0, 0.6)';  // Red (transparent)
-      } else {
-        return 'rgba(54, 162, 235, 0.6)';  // Blue (transparent)
+// Create an array of bar colors with the highest preptime bar in red
+var barColors = totalPreptimes.map(function(preptime, index) {
+  if (index === maxPreptimeIndex) {
+    return 'rgba(255, 0, 0, 0.6)';  // Red (transparent)
+  } else {
+    return 'rgba(54, 162, 235, 0.6)';  // Blue (transparent)
+  }
+});
+
+// Create a horizontal bar chart for total preptime
+var ctx = document.getElementById('preptime-chart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: recipeNamesPrep, // Use recipeNamesPrep instead of recipeNames
+    datasets: [{
+      label: 'Total Preptime',
+      data: totalPreptimes,
+      backgroundColor: barColors,
+      borderColor: 'rgba(0, 0, 0, 0.6)',
+    }]
+  },
+  options: {
+    indexAxis: 'y', // Rotate the chart to display as horizontal bars
+    scales: {
+      x: {
+        beginAtZero: true,
+        precision: 0
       }
-    });
-
-    // Create a horizontal bar chart for total preptime
-    var ctx = document.getElementById('preptime-chart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: recipeNames,
-          datasets: [{
-            label: 'Total Preptime',
-            data: totalPreptimes,
-            backgroundColor: barColors,
-            borderColor: 'rgba(0, 0, 0, 0.6)',
-          }]
-        },
-        options: {
-          indexAxis: 'y', // Rotate the chart to display as horizontal bars
-          scales: {
-            x: {
-              beginAtZero: true,
-              precision: 0
-            }
-          }
-        }
-      });
+    }
+  }
+});
 
 
       var recipeCooktime = JSON.parse('{{ recipe_cooktime|safe }}');
 console.log('recipeCooktime:', recipeCooktime);
 
-var recipeNames = [];
+var recipeNamesCook = [];
 var totalCooktimes = [];
 
 // Extract recipe names and total cooktime from JSON data
 recipeCooktime.forEach(function(item) {
-  recipeNames.push(item.title);
+  recipeNamesCook.push(item.title);  // Corrected line
   totalCooktimes.push(item.total_cooktime);
 });
 
@@ -325,7 +325,7 @@ var ctx = document.getElementById('cooktime-chart').getContext('2d');
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: recipeNames,
+    labels: recipeNamesCook,  // Corrected line
     datasets: [{
       label: 'Total Cooktime',
       data: totalCooktimes,
@@ -343,6 +343,7 @@ new Chart(ctx, {
     }
   }
 });
+
 
 //prices-------------------------------------------------
             var recipePrices = JSON.parse('{{ recipe_prices|safe }}');
@@ -372,17 +373,164 @@ new Chart(ctx, {
                     },
                 },
               });
+              var recipeRatings = JSON.parse('{{ recipe_ratings|safe }}');
+console.log('recipeRatings:', recipeRatings);
 
+var ratingsLabels = [];
+var ratingsData = [];
+
+// Extract recipe name and rating from JSON data
+recipeRatings.forEach(function(item) {
+    ratingsLabels.push(item.title);
+    ratingsData.push(item.rating);
+});
+
+// Create a doughnut chart for recipe ratings
+var ratingsCtx = document.getElementById('ratings-chart').getContext('2d');
+
+new Chart(ratingsCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ratingsLabels,
+        datasets: [{
+            data: ratingsData,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)',   // Red (transparent)
+                'rgba(54, 162, 235, 0.6)',   // Blue (transparent)
+                'rgba(255, 206, 86, 0.6)',   // Yellow (transparent)
+                'rgba(75, 192, 192, 0.6)',   // Green (transparent)
+                'rgba(153, 102, 255, 0.6)',  // Purple (transparent)
+                'rgba(255, 159, 64, 0.6)',    // Orange (transparent)
+                'rgba(0, 255, 0, 0.6)',       // Bright Green (transparent)
+                'rgba(0, 0, 255, 0.6)',       // Bright Blue (transparent)
+                'rgba(255, 255, 0, 0.6)',     // Bright Yellow (transparent)
+                'rgba(128, 0, 128, 0.6)',     // Purple (transparent)
+                'rgba(255, 165, 0, 0.6)',     // Orange (transparent)
+                'rgba(0, 128, 128, 0.6)',     // Teal (transparent)
+            ],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'right'
+            },
+            datalabels: {
+                color: '#000',
+                formatter: function(value, context) {
+                    var sum = context.dataset.data.reduce((a, b) => a + b, 0);
+                    var percentage = ((value / sum) * 100).toFixed(2) + '%';
+                    return percentage;
+                },
+                anchor: 'end',
+                align: 'start',
+                offset: 10,
+                padding: 5
+            }
+        }
+    }
+});
+var cuisineTypeData = JSON.parse('{{ cuisine_type_counts | safe }}');
+var cuisineTypes = cuisineTypeData.map(function(entry) {
+  return entry.cuisine_types;
+});
+var counts = cuisineTypeData.map(function(entry) {
+  return entry.count;
+});
+
+var allCuisineTypes = []; // Array to hold all cuisine types
+var allCounts = []; // Array to hold corresponding counts
+
+// Get all unique cuisine types
+cuisineTypes.forEach(function(type, index) {
+  if (!allCuisineTypes.includes(type)) {
+    allCuisineTypes.push(type);
+    allCounts.push(0);
+  }
+});
+
+// Update the counts with actual values
+cuisineTypes.forEach(function(type, index) {
+  var typeIndex = allCuisineTypes.indexOf(type);
+  allCounts[typeIndex] += counts[index];
+});
+
+var ctx = document.getElementById('cuisineTypeChart').getContext('2d');
+var chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: allCuisineTypes,
+    datasets: [{
+      label: 'Recipe Count',
+      data: allCounts,
+      backgroundColor: [
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(255, 205, 86, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(255, 205, 86, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 205, 86, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 205, 86, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Recipe Count per Cuisine Type'
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        grid: {
+          display: true
+        }
+      }
+    }
+  }
+});
 
 
 }); // Closing bracket for DOMContentLoaded event listener
-
-
 
 </script>
 {% endblock %}
 
 {% block result_list %}
+
+<div style="border-radius: 20px; background: #dbbfdf;width: 100%;height: 10px; margin-bottom: 2%;">  &nbsp;</div>
+
 <div style="display: flex;margin-bottom: 50px;">
   <div class="container d-flex justify-content-start align-items-start" style="width: 35%;">
     <div>
@@ -420,8 +568,8 @@ new Chart(ctx, {
       <div class="card-body">
         <h5 class="card-title">Number of Meals Based on Meal Type</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The Recipe website allows three types of Meal Types, specifically for
+          Breakfast, Lunch, and Dinner.
         </p>
       </div>
     </div>
@@ -432,8 +580,8 @@ new Chart(ctx, {
       <div class="card-body">
         <h5 class="card-title">Servings Chart</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The Servings Chart represents each recipe made by the users. The chart will
+          display each recipe and how many srvings can one meal provide them when made.
         </p>
       </div>
     </div>
@@ -480,11 +628,6 @@ new Chart(ctx, {
     </div>
   </div>
 </div>
-
-
-
-
-
 </div>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -492,10 +635,11 @@ new Chart(ctx, {
     <div class="card shadow" style="border: none; background-color: white;">
       <canvas id="preptime-chart"></canvas>
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Preparation Time Chart</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The preparation time chart shows the amount of time each recipe will take
+          when preparing. The data is the calculation of hours converted to minutes
+          plus the minutes indicated by the user.
         </p>
       </div>
     </div>
@@ -504,10 +648,11 @@ new Chart(ctx, {
     <div class="card shadow" style="border: none; background-color: white;">
       <canvas id="cooktime-chart"></canvas>
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Cook Time Chart</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The cook time chart shows the amount of time each food will take
+          to be cooked. The data is the calculation of hours converted to minutes
+          plus the minutes indicated by the user.
         </p>
       </div>
     </div>
@@ -516,10 +661,10 @@ new Chart(ctx, {
     <div class="card shadow" style="border: none; background-color: white;">
       <canvas id="difficulty-chart"></canvas>
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Recipe Difficulty Chart</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The recipe difficulty chart shows the three categories of recipe 
+          dificulty: Beginner, Intermediate, and Advanced.
         </p>
       </div>
     </div>
@@ -528,15 +673,65 @@ new Chart(ctx, {
     <div class="card shadow" style="border: none; background-color: white;">
       <canvas id="radar-chart"></canvas>
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Recipe Cost Chart</h5>
         <p class="card-text">
-          This is a longer card with supporting text below as a natural lead-in to
-          additional content. This content is a little bit longer.
+          The recipe price chart indicates the price or cost a recipe will 
+          amount to. This includes the amount of ingredients, which was indicated by the user
+          who made the recipe. 
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<div style="display: flex;margin-bottom: 50px;padding: 4%;">
+  
+  <div class="container" style="border-radius: 20px;
+  background: #b4f16b;
+  box-shadow:  20px 20px 41px #87b550,
+               -20px -20px 41px #e1ff86; padding: 20px;">
+    <div class="row">
+      <div class="col-lg-3">
+        <div>
+            <img src="{% static '/icons/batter.png' %}" alt="RecipeBook" style="height: 50px;margin-bottom: 10%;">
+            {% if recipe_with_highest_rating %}
+    <h2>Recipe with Highest Rating</h2>
+    <p>Title: {{ recipe_with_highest_rating.title }}</p>
+    <p>Rating: {{ recipe_with_highest_rating.rating }}</p>
+    <!-- Add other fields as needed -->
+{% endif %}
+          </div>
+      </div>
+      <div class="col-lg-9">
+          <div class="col-md-12">
+            <canvas id="ratings-chart" style="width: 100%; height: 400px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container d-flex justify-content-start align-items-start" style="width: 35%;">
+    <div>
+      <img src="{% static '/icons/chef3.png' %}" style="height: 400px;margin-top: -30px;">
+      <h1 class="header" >Find Which Recipe has the Highest Rating<img src="{% static '/icons/rate.png' %}" style="height: 50px;"></h1>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex card shadow" style="border: none; background-color: white;padding: 5%;">
+  <canvas id="cuisineTypeChart"></canvas>
+  <div class="card-body">
+    <h5 class="card-title">Recipe Based on Cuisine Types</h5>
+    <p class="card-text">
+      The Cuisine Types Chart shows the number of recipe per cuisine type. 
+    </p>
+  </div>
+</div>
+
+
+
+
+<div style="border-radius: 20px; background: #dbbfdf;width: 100%;height: 10px; margin-bottom: 2%;margin-top: 3%;">  &nbsp;</div>
+
 
 {{ block.super }}
 {% endblock %}
