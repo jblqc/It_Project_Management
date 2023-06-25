@@ -167,104 +167,80 @@
 
 
     //ANALYTCIS RECIPE--------------------------------------------------------------------------
-    document.addEventListener("DOMContentLoaded", function() {
-  var recipeData = JSON.parse('{{ recipe_per_month|safe }}');
+   
+    var recipeData = JSON.parse('{{ recipe_per_month|safe }}');
 
-  // Prepare the data for the chart
-  var labels = [];
-  var counts = [];
+// Prepare the data for the chart
+var labels = [];
+var counts = [];
 
-  // Create an array with month names from January to December
-  var months = [
+// Create an array with month names from January to December
+var months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
-  ];
+];
 
-  // Loop through the months array and check if the corresponding data exists in recipeData
-  for (var i = 0; i < 12; i++) {
+// Loop through the months array and check if the corresponding data exists in recipeData
+for (var i = 0; i < 12; i++) {
     var monthData = recipeData.find(function(item) {
-      var date = new Date(item.month);
-      return date.getMonth() === i;
+        var date = new Date(item.month);
+        return date.getMonth() === i;
     });
 
     if (monthData) {
-      labels.push(months[i] + ' ' + monthData.month.slice(-4));
-      counts.push(monthData.count);
+        labels.push(months[i] + ' ' + monthData.month.slice(-4));
+        counts.push(monthData.count);
     } else {
-      labels.push(months[i]);
-      counts.push(0);
+        labels.push(months[i]);
+        counts.push(0);
     }
-  }
+}
 
-  // Check if the chart canvas element exists
-  var ctx = document.getElementById("recipeAnalytics");
-  if (!ctx) {
-    return; // Exit the function if the element does not exist
-  }
-
-  // Define the delayBetweenPoints variable
-  var totalDuration = 10000;
-  var delayBetweenPoints = totalDuration / counts.length;
-
-  // Create the chart
-  var chart = new Chart(ctx.getContext("2d"), {
+// Create the chart
+var ctx = document.getElementById("recipeAnalytics").getContext("2d");
+var chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: labels,
-      datasets: [{
-        label: "Recipes added per month",
-        data: counts,
-        backgroundColor: "rgba(147, 13, 197, 0.2)",
-        borderColor: "rgba(166, 13, 222, 1)",
-        borderWidth: 2,
-      }]
+        labels: labels,
+        datasets: [{
+            label: "Recipes added per month",
+            data: counts,
+            backgroundColor: "rgba(147, 13, 197, 0.2)",
+            borderColor: "rgba(166, 13, 222, 1)",
+            borderWidth: 2,
+        }]
     },
     options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1,
-            precision: 0
-          }
-        }
-      },
-      animation: {
-        x: {
-          type: 'number',
-          easing: 'linear',
-          duration: delayBetweenPoints,
-          from: NaN,
-          delay(ctx) {
-            if (ctx.type !== 'data' || ctx.xStarted) {
-              return 0;
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1,
+                    precision: 0
+                }
             }
-            ctx.xStarted = true;
-            return ctx.index * delayBetweenPoints;
-          }
         },
-        y: {
-          type: 'number',
-          easing: 'linear',
-          duration: delayBetweenPoints,
-          from: previousY,
-          delay(ctx) {
-            if (ctx.type !== 'data' || ctx.yStarted) {
-              return 0;
+        animation: {
+            x: {
+                type: 'number',
+                easing: 'linear',
+                duration: 2000
+            },
+            y: {
+                type: 'number',
+                easing: 'easeOutElastic',
+                duration: 2000,
+                from: function(ctx) {
+                    if (ctx.type !== 'data' || ctx.yStarted) {
+                        return ctx.chart.scales.y.getPixelForValue(0);
+                    }
+                    ctx.yStarted = true;
+                    return ctx.chart.scales.y.getPixelForValue(100);
+                }
             }
-            ctx.yStarted = true;
-            return ctx.index * delayBetweenPoints;
-          }
         }
-      }
     }
-  });
 });
-
-
-
-
-
 
 
 //total_prep--------------------------
@@ -464,8 +440,8 @@ new Chart(ctx, {
   </div>
 </div>
 <!------------------>
-<div class="container-fluid">
-  <div class="row justify-content-center">
+<div class="container-fluid" style="padding: 5%;">
+  <div class="row justify-content-center" style=" text-align: center;">
     <div class="col-md-3" style="border-radius: 40px; background: #937de4; box-shadow: 26px 26px 52px #614cad, inset -26px -26px 52px #8f6bff; margin-right: 2%; margin-left: 20px;">
       <h3>Recipe with Highest Preptime</h3>
       {% if recipe_with_max_preptime_image_url %}
